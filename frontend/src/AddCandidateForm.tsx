@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 
-const AddCandidateForm: React.FC = () => {
+interface AddCandidateFormProps {
+  onCandidateAdded: () => void;
+}
+
+const AddCandidateForm: React.FC<AddCandidateFormProps> = ({ onCandidateAdded }) => {
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
@@ -48,27 +52,47 @@ const AddCandidateForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validate()) return;
     setLoading(true);
     setError(null);
-    setSuccess(null);
-    const formData = new FormData();
-    Object.entries(form).forEach(([key, value]) => formData.append(key, value));
-    if (cv) formData.append('cv', cv);
+
     try {
-      const res = await fetch('http://localhost:3010/candidates', {
+      if (!validate()) {
+        setLoading(false);
+        return;
+      }
+
+      const formData = new FormData();
+      Object.entries(form).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+      
+      if (cv) {
+        formData.append('cv', cv);
+      }
+
+      const response = await fetch('http://localhost:3010/candidates', {
         method: 'POST',
         body: formData,
       });
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || 'Error al añadir candidato');
+
+      if (!response.ok) {
+        throw new Error('Error al guardar el candidato');
       }
-      setSuccess('Candidato añadido exitosamente.');
-      setForm({ firstName: '', lastName: '', email: '', phone: '', address: '', education: '', workExperience: '' });
+
+      setSuccess('Candidato añadido exitosamente');
+      setForm({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        address: '',
+        education: '',
+        workExperience: '',
+      });
       setCv(null);
-    } catch (err: any) {
-      setError(err.message);
+      onCandidateAdded(); // Llamar a la función después de guardar exitosamente
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Error desconocido');
     } finally {
       setLoading(false);
     }

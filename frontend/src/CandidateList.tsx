@@ -7,14 +7,11 @@ interface Candidate {
   email: string;
   phone?: string;
   education?: string;
-  workExperience?: string;
   cvUrl?: string;
 }
 
 const CandidateList: React.FC = () => {
   const [candidates, setCandidates] = useState<Candidate[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchCandidates();
@@ -24,34 +21,14 @@ const CandidateList: React.FC = () => {
     try {
       const response = await fetch('http://localhost:3010/candidates');
       if (!response.ok) {
-        throw new Error('Error al obtener los candidatos');
+        throw new Error('Error al cargar candidatos');
       }
       const data = await response.json();
       setCandidates(data);
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+    } catch (error) {
+      console.error('Error:', error);
     }
   };
-
-  if (loading) {
-    return (
-      <div className="text-center py-4">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Cargando...</span>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        {error}
-      </div>
-    );
-  }
 
   return (
     <div className="card shadow-sm">

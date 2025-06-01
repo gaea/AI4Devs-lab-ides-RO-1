@@ -5,6 +5,12 @@ import AddCandidateForm from './AddCandidateForm';
 import CandidateList from './CandidateList';
 
 function App() {
+  const [refreshList, setRefreshList] = useState(0);
+
+  const handleCandidateAdded = () => {
+    setRefreshList(prev => prev + 1); // Incrementar para forzar actualización
+  };
+
   return (
     <div className="App">
       <nav className="navbar navbar-dark bg-primary">
@@ -15,10 +21,10 @@ function App() {
       <main className="container py-4">
         <div className="row">
           <div className="col-md-12 mb-4">
-            <AddCandidateForm />
+            <AddCandidateForm onCandidateAdded={handleCandidateAdded} />
           </div>
           <div className="col-md-12">
-            <CandidateList />
+            <CandidateList key={refreshList} />
           </div>
         </div>
       </main>
