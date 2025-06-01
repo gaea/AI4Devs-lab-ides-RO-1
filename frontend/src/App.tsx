@@ -21,7 +21,7 @@ function App() {
   return (
     <div className="App d-flex">
       <Sidebar onNavigate={handleNavigate} activeView={activeView} />
-      <div className="flex-grow-1">
+      <div className="flex-grow-1 main-content" style={{ minWidth: 0 }}>
         <nav className="navbar navbar-dark bg-primary">
           <div className="container-fluid">
             <span className="navbar-brand mb-0 h1">Sistema de Seguimiento de Talento</span>

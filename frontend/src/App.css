@@ -1,4 +1,16 @@
 .App {
   min-height: 100vh;
   background-color: #f8f9fa;
+  overflow: hidden;
+}
+
+.main-content {
+  overflow-y: auto;
+  height: 100vh;
+}
+
+/* Ensure content doesn't overflow horizontally */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
