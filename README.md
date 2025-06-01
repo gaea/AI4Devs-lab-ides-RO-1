@@ -93,3 +93,23 @@ Para detener el contenedor Docker, ejecuta el siguiente comando:
 ```
 docker-compose down
 ```
+
+# Ejemplo de uso del endpoint para añadir candidatos
+
+Puedes probar el endpoint POST `/candidates` usando `curl` de la siguiente manera:
+
+```bash
+curl -X POST http://localhost:3010/candidates \
+  -F "firstName=Juan" \
+  -F "lastName=Pérez" \
+  -F "email=juan.perez@example.com" \
+  -F "phone=123456789" \
+  -F "address=Calle 123" \
+  -F "education=Ingeniero de Sistemas" \
+  -F "workExperience=5 años en desarrollo" \
+  -F "cv=@/ruta/al/archivo/CV_JuanPerez.pdf"
+```
+
+- El campo `cv` debe ser un archivo PDF o DOCX (máx. 5MB).
+- Los campos `firstName`, `lastName` y `email` son obligatorios.
+- Si la petición es exitosa, recibirás un JSON con los datos del candidato creado.

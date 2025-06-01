@@ -1,24 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import AddCandidateForm from './AddCandidateForm';
+import CandidateList from './CandidateList';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <nav className="navbar navbar-dark bg-primary">
+        <div className="container">
+          <span className="navbar-brand mb-0 h1">Sistema de Seguimiento de Talento</span>
+        </div>
+      </nav>
+      <main className="container py-4">
+        <div className="row">
+          <div className="col-md-12 mb-4">
+            <AddCandidateForm />
+          </div>
+          <div className="col-md-12">
+            <CandidateList />
+          </div>
+        </div>
+      </main>
     </div>
   );
 }

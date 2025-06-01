@@ -18,3 +18,17 @@ model User {
   email String  @unique
   name  String?
 }
+
+model Candidate {
+  id             Int      @id @default(autoincrement())
+  firstName      String
+  lastName       String
+  email          String   @unique
+  phone          String? // Campo opcional
+  address        String? // Campo opcional
+  education      String? // Campo opcional
+  workExperience String? // Campo opcional
+  cvUrl          String? // Campo opcional
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}

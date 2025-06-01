@@ -27,3 +27,11 @@ yarn-error.log*
 
 # .env
 
+# Ignore CV files but keep the directory structure
+backend/uploads/cvs/*
+!backend/uploads/cvs/.gitkeep
+
+# DO NOT ignore lock files
+!package-lock.json
+!yarn.lock
+
