@@ -22,4 +22,5 @@ export class CandidateService {
 
   async getCandidateById(id: number): Promise<Candidate> {
     return this.getCandidatesUseCase.getById(id);
+  }
 }
