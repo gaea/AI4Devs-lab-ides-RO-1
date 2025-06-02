@@ -1,16 +1,95 @@
 .App {
   min-height: 100vh;
   background-color: #f8f9fa;
-  overflow: hidden;
 }
 
-.main-content {
-  overflow-y: auto;
-  height: 100vh;
+.translate-x-n100 {
+  transform: translateX(-100%);
 }
 
-/* Ensure content doesn't overflow horizontally */
+.translate-x-0 {
+  transform: translateX(0);
+}
+
+/* Responsive table styles */
 .table-responsive {
-  overflow-x: auto;
+  margin-bottom: 1rem;
   -webkit-overflow-scrolling: touch;
+}
+
+/* Custom scrollbar for better UX */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Mobile optimizations */
+@media (max-width: 767.98px) {
+  .card {
+    border: none;
+    box-shadow: none !important;
+  }
+
+  .container-fluid {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  /* Stack form fields vertically on mobile */
+  .row > [class^="col-"] {
+    margin-bottom: 1rem;
+  }
+
+  /* Adjust table for mobile */
+  .table-responsive {
+    margin-left: -10px;
+    margin-right: -10px;
+    width: calc(100% + 20px);
+  }
+
+  .table td, .table th {
+    white-space: nowrap;
+  }
+
+  /* Make buttons full width on mobile */
+  .btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Adjust form inputs for better mobile interaction */
+  .form-control {
+    font-size: 16px; /* Prevents iOS zoom on focus */
+  }
+}
+
+/* Tablet and desktop optimizations */
+@media (min-width: 768px) {
+  .main-content {
+    overflow-y: auto;
+    height: 100vh;
+  }
+
+  .btn {
+    min-width: 120px;
+  }
+
+  /* Ensure sidebar is always visible on desktop */
+  .bg-dark.text-white.h-100 {
+    position: relative !important;
+    transform: none !important;
+  }
 }

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Header from '../layout/Header';
 
 interface Candidate {
   id: number;
@@ -25,7 +26,7 @@ const CandidateList: React.FC = () => {
       setError(null);
       const response = await fetch('http://localhost:3010/candidates');
       if (!response.ok) {
-        throw new Error('Error al cargar candidatos');
+        throw new Error('Error loading candidates');
       }
       const data = await response.json();
       setCandidates(data);
@@ -33,7 +34,7 @@ const CandidateList: React.FC = () => {
       setError(
         error instanceof Error
           ? error.message
-          : 'Ocurrió un error al cargar los candidatos'
+          : 'An error occurred while loading candidates'
       );
       console.error('Error:', error);
     } finally {
@@ -45,7 +46,7 @@ const CandidateList: React.FC = () => {
     return (
       <div className="text-center p-5">
         <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Cargando...</span>
+          <span className="visually-hidden">Loading...</span>
         </div>
       </div>
     );
@@ -61,22 +62,19 @@ const CandidateList: React.FC = () => {
 
   return (
     <div className="container-fluid px-4">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <div>
-          <h2 className="m-0">Candidatos</h2>
-          <p className="text-muted mb-0">
-            {candidates.length}{' '}
-            {candidates.length === 1 ? 'candidato' : 'candidatos'} registrados
-          </p>
-        </div>
-      </div>
+      <Header
+        title="Candidates"
+        subtitle={`${candidates.length} ${
+          candidates.length === 1 ? 'candidate' : 'candidates'
+        } registered`}
+      />
 
       <div className="card shadow-sm">
         <div className="card-body">
           {candidates.length === 0 ? (
             <div className="text-center p-5">
               <p className="text-muted mb-0">
-                No hay candidatos registrados aún.
+                No candidates registered yet.
               </p>
             </div>
           ) : (

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Header from '../layout/Header';
 
 interface AddCandidateFormProps {
   onCandidateAdded: () => void;
@@ -107,135 +108,139 @@ const AddCandidateForm: React.FC<AddCandidateFormProps> = ({ onCandidateAdded })
   };
 
   return (
-    <div className="card shadow-sm">
-      <div className="card-body">
-        <h3 className="card-title mb-4">Add New Candidate</h3>
+    <div className="container-fluid px-4">
+      <Header
+        title="Add New Candidate"
+      />
 
-        {error && (
-          <div className="alert alert-danger alert-dismissible fade show" role="alert">
-            {error}
-            <button type="button" className="btn-close" onClick={() => setError(null)} aria-label="Close"></button>
-          </div>
-        )}
+      <div className="card shadow-sm">
+        <div className="card-body">
+          {error && (
+            <div className="alert alert-danger alert-dismissible fade show" role="alert">
+              {error}
+              <button type="button" className="btn-close" onClick={() => setError(null)} aria-label="Close"></button>
+            </div>
+          )}
 
-        {success && (
-          <div className="alert alert-success alert-dismissible fade show" role="alert">
-            {success}
-            <button type="button" className="btn-close" onClick={() => setSuccess(null)} aria-label="Close"></button>
-          </div>
-        )}
+          {success && (
+            <div className="alert alert-success alert-dismissible fade show" role="alert">
+              {success}
+              <button type="button" className="btn-close" onClick={() => setSuccess(null)} aria-label="Close"></button>
+            </div>
+          )}
 
-        <form onSubmit={handleSubmit} className="row g-3">
-          <div className="col-md-6">
-            <label htmlFor="firstName" className="form-label">First Name *</label>
-            <input
-              type="text"
-              className="form-control"
-              id="firstName"
-              name="firstName"
-              value={form.firstName}
-              onChange={handleChange}
-              disabled={loading}
-              required
-            />
-          </div>
+          <form onSubmit={handleSubmit} className="row g-3">
+            <div className="col-md-6">
+              <label htmlFor="firstName" className="form-label">First Name *</label>
+              <input
+                type="text"
+                className="form-control"
+                id="firstName"
+                name="firstName"
+                value={form.firstName}
+                onChange={handleChange}
+                disabled={loading}
+                required
+              />
+            </div>
 
-          <div className="col-md-6">
-            <label htmlFor="lastName" className="form-label">Last Name *</label>
-            <input
-              type="text"
-              className="form-control"
-              id="lastName"
-              name="lastName"
-              value={form.lastName}
-              onChange={handleChange}
-              disabled={loading}
-              required
-            />
-          </div>
+            <div className="col-md-6">
+              <label htmlFor="lastName" className="form-label">Last Name *</label>
+              <input
+                type="text"
+                className="form-control"
+                id="lastName"
+                name="lastName"
+                value={form.lastName}
+                onChange={handleChange}
+                disabled={loading}
+                required
+              />
+            </div>
 
-          <div className="col-md-6">
-            <label htmlFor="email" className="form-label">Email *</label>
-            <input
-              type="email"
-              className="form-control"
-              id="email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              disabled={loading}
-              required
-            />
-          </div>
+            <div className="col-md-6">
+              <label htmlFor="email" className="form-label">Email *</label>
+              <input
+                type="email"
+                className="form-control"
+                id="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                disabled={loading}
+                required
+              />
+            </div>
 
-          <div className="col-md-6">
-            <label htmlFor="phone" className="form-label">Phone</label>
-            <input
-              type="tel"
-              className="form-control"
-              id="phone"
-              name="phone"
-              value={form.phone}
-              onChange={handleChange}
-              disabled={loading}
-            />
-          </div>
+            <div className="col-md-6">
+              <label htmlFor="phone" className="form-label">Phone</label>
+              <input
+                type="tel"
+                className="form-control"
+                id="phone"
+                name="phone"
+                value={form.phone}
+                onChange={handleChange}
+                disabled={loading}
+              />
+            </div>
 
-          <div className="col-12">
-            <label htmlFor="education" className="form-label">Education</label>
-            <input
-              type="text"
-              className="form-control"
-              id="education"
-              name="education"
-              value={form.education}
-              onChange={handleChange}
-              disabled={loading}
-            />
-          </div>
+            <div className="col-12">
+              <label htmlFor="education" className="form-label">Education</label>
+              <input
+                type="text"
+                className="form-control"
+                id="education"
+                name="education"
+                value={form.education}
+                onChange={handleChange}
+                disabled={loading}
+              />
+            </div>
 
-          <div className="col-12">
-            <label htmlFor="workExperience" className="form-label">Work Experience</label>
-            <textarea
-              className="form-control"
-              id="workExperience"
-              name="workExperience"
-              value={form.workExperience}
-              onChange={handleChange}
-              disabled={loading}
-              rows={3}
-            />
-          </div>
+            <div className="col-12">
+              <label htmlFor="workExperience" className="form-label">Work Experience</label>
+              <textarea
+                className="form-control"
+                id="workExperience"
+                name="workExperience"
+                value={form.workExperience}
+                onChange={handleChange}
+                disabled={loading}
+                rows={3}
+              />
+            </div>
 
-          <div className="col-12">
-            <label htmlFor="cv" className="form-label">CV (PDF or DOCX, max 5MB)</label>
-            <input
-              type="file"
-              className="form-control"
-              id="cv"
-              onChange={handleFileChange}
-              accept=".pdf,.doc,.docx"
-              disabled={loading}
-            />
-          </div>
+            <div className="col-12">
+              <label htmlFor="cv" className="form-label">CV (PDF or DOCX, max 5MB)</label>
+              <input
+                type="file"
+                className="form-control"
+                id="cv"
+                onChange={handleFileChange}
+                accept=".pdf,.doc,.docx"
+                disabled={loading}
+              />
+            </div>
 
-          <div className="col-12">
-            <button 
-              type="submit" 
-              className="btn btn-primary"
-              disabled={loading}
-            >
-              {loading ? (
-                <>
-                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                  Saving...
-                </>
-              ) : (
-                'Add Candidate'
-              )}
-            </button>
-          </div>
-        </form>
+            <div className="col-12">
+              <button 
+                type="submit" 
+                className="btn btn-primary"
+                disabled={loading}
+              >
+                {loading ? (
+                  <>
+                    <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Saving...
+                  </>
+                ) : (
+                  'Add Candidate'
+                )}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
