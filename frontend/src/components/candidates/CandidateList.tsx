@@ -145,7 +145,7 @@ const CandidateList: React.FC = () => {
                       <td>
                         {candidate.resume && candidate.resume.length > 0 ? (
                           <a
-                            href={candidate.resume[0].filePath}
+                            href={`http://localhost:3010${candidate.resume[0].filePath}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="btn btn-sm btn-outline-primary"

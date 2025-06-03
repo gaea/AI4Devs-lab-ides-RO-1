@@ -38,12 +38,12 @@ export class CandidateMapper {
         startDate: exp.startDate,
         endDate: exp.endDate
       })),
-      prismaCandidate.resume[0] ? {
-        id: prismaCandidate.resume[0].id,
-        filePath: prismaCandidate.resume[0].filePath,
-        fileType: prismaCandidate.resume[0].fileType,
-        uploadDate: prismaCandidate.resume[0].uploadDate
-      } : undefined,
+      prismaCandidate.resume.map((res) => ({
+        id: res.id,
+        filePath: res.filePath,
+        fileType: res.fileType,
+        uploadDate: res.uploadDate
+      })),
       prismaCandidate.createdAt,
       prismaCandidate.updatedAt
     );
@@ -73,12 +73,12 @@ export class CandidateMapper {
           endDate: exp.endDate
         }))
       },
-      resume: candidate.resume ? {
-        create: [{
-          filePath: candidate.resume.filePath,
-          fileType: candidate.resume.fileType,
-          uploadDate: candidate.resume.uploadDate
-        }]
+      resume: candidate.resume && candidate.resume.length > 0 ? {
+        create: candidate.resume.map((res: Resume) => ({
+          filePath: res.filePath,
+          fileType: res.fileType,
+          uploadDate: res.uploadDate
+        }))
       } : undefined
     };
   }

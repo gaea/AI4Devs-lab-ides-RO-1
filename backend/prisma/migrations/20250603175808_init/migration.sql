@@ -1,15 +1,11 @@
-/*
-  Warnings:
+-- CreateTable
+CREATE TABLE "User" (
+    "id" SERIAL NOT NULL,
+    "email" TEXT NOT NULL,
+    "name" TEXT,
 
-  - You are about to drop the column `cvUrl` on the `Candidate` table. All the data in the column will be lost.
-  - You are about to drop the column `education` on the `Candidate` table. All the data in the column will be lost.
-  - You are about to drop the column `workExperience` on the `Candidate` table. All the data in the column will be lost.
-
-*/
--- AlterTable
-ALTER TABLE "Candidate" DROP COLUMN "cvUrl",
-DROP COLUMN "education",
-DROP COLUMN "workExperience";
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "Education" (
@@ -17,6 +13,7 @@ CREATE TABLE "Education" (
     "institution" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "startDate" TIMESTAMP(3) NOT NULL,
+    "endDate" TIMESTAMP(3),
     "candidateId" INTEGER NOT NULL,
 
     CONSTRAINT "Education_pkey" PRIMARY KEY ("id")
@@ -45,6 +42,26 @@ CREATE TABLE "Resume" (
 
     CONSTRAINT "Resume_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateTable
+CREATE TABLE "Candidate" (
+    "id" SERIAL NOT NULL,
+    "firstName" TEXT NOT NULL,
+    "lastName" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "phone" TEXT,
+    "address" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Candidate_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Candidate_email_key" ON "Candidate"("email");
 
 -- AddForeignKey
 ALTER TABLE "Education" ADD CONSTRAINT "Education_candidateId_fkey" FOREIGN KEY ("candidateId") REFERENCES "Candidate"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -10,7 +10,7 @@ export interface CreateCandidateDTO {
   address?: string;
   education: Omit<Education, 'id'>[];
   workExperience: Omit<WorkExperience, 'id'>[];
-  resume?: Omit<Resume, 'id'>;
+  resume?: Omit<Resume, 'id'>[];
 }
 
 export interface CandidateResponseDTO {
@@ -22,7 +22,7 @@ export interface CandidateResponseDTO {
   address?: string;
   education: Education[];
   workExperience: WorkExperience[];
-  resume?: Resume;
+  resume: Resume[];
   createdAt: Date;
   updatedAt: Date;
 }

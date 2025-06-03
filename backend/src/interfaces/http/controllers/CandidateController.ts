@@ -46,11 +46,11 @@ export class CandidateController {
           address: req.body.address,
           education,
           workExperience,
-          resume: req.file ? {
+          resume: req.file ? [{
             filePath: `/uploads/cvs/${req.file.filename}`,
             fileType: req.file.mimetype,
             uploadDate: new Date()
-          } : undefined,
+          }] : undefined,
         };
       } else {
         // Handle JSON request
@@ -74,11 +74,11 @@ export class CandidateController {
           address: req.body.address,
           education,
           workExperience,
-          resume: req.body.resume ? {
+          resume: req.body.resume ? [{
             filePath: req.body.resume.filePath,
             fileType: req.body.resume.fileType,
             uploadDate: new Date(req.body.resume.uploadDate)
-          } : undefined,
+          }] : undefined,
         };
       }
 

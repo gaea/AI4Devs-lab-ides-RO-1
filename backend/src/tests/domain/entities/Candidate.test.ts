@@ -47,7 +47,7 @@ describe('Candidate', () => {
       '123 Main St',
       mockEducation,
       mockWorkExperience,
-      mockResume
+      [mockResume]
     );
 
     expect(candidate.id).toBe(1);
@@ -58,7 +58,7 @@ describe('Candidate', () => {
     expect(candidate.address).toBe('123 Main St');
     expect(candidate.education).toEqual(mockEducation);
     expect(candidate.workExperience).toEqual(mockWorkExperience);
-    expect(candidate.resume).toEqual(mockResume);
+    expect(candidate.resume).toEqual([mockResume]);
   });
 
   it('should create a valid candidate with only required fields', () => {

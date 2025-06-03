@@ -12,7 +12,7 @@ export interface CreateCandidateDTO {
   address?: string;
   education: Omit<Education, 'id'>[];
   workExperience: Omit<WorkExperience, 'id'>[];
-  resume?: Omit<Resume, 'id'>;
+  resume?: Omit<Resume, 'id'>[];
 }
 
 export class CreateCandidateUseCase {
@@ -33,7 +33,7 @@ export class CreateCandidateUseCase {
       data.address,
       data.education,
       data.workExperience,
-      data.resume
+      data.resume || []
     );
 
     return this.candidateRepository.create(candidate);

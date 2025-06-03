@@ -112,14 +112,14 @@ export class PrismaCandidateRepository implements ICandidateRepository {
         },
         resume: {
           deleteMany: {},
-          ...(candidate.resume ? {
-            create: [{
-              filePath: candidate.resume.filePath,
-              fileType: candidate.resume.fileType,
-              uploadDate: candidate.resume.uploadDate,
-            }]
+          ...(candidate.resume && candidate.resume.length > 0 ? {
+            create: candidate.resume.map(res => ({
+              filePath: res.filePath,
+              fileType: res.fileType,
+              uploadDate: res.uploadDate,
+            }))
           } : {})
-        }
+        },
       },
       include: {
         education: true,

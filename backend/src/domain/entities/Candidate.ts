@@ -12,7 +12,7 @@ export class Candidate {
     public address?: string,
     public education: Education[] = [],
     public workExperience: WorkExperience[] = [],
-    public resume?: Resume,
+    public resume: Resume[] = [],
     public readonly createdAt: Date = new Date(),
     public readonly updatedAt: Date = new Date()
   ) {
@@ -88,17 +88,17 @@ export class Candidate {
       }
     });
 
-    // Validate resume upload date
-    if (this.resume) {
-      if (!(this.resume.uploadDate instanceof Date) || isNaN(this.resume.uploadDate.getTime())) {
+    // Validate resume upload dates
+    this.resume.forEach(res => {
+      if (!(res.uploadDate instanceof Date) || isNaN(res.uploadDate.getTime())) {
         throw new Error('Invalid resume upload date');
       }
 
       // Upload date cannot be in the future
-      if (this.resume.uploadDate > new Date()) {
+      if (res.uploadDate > new Date()) {
         throw new Error('Resume upload date cannot be in the future');
       }
-    }
+    });
   }
 
   public getFullName(): string {

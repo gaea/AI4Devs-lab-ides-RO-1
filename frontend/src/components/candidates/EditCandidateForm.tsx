@@ -429,7 +429,16 @@ const EditCandidateForm: React.FC<EditCandidateFormProps> = ({ candidateId, onCa
             </div>
 
             <div className="col-12">
-              <button type="submit" className="btn btn-primary">Update Candidate</button>
+              <div className="d-flex gap-2">
+                <button type="submit" className="btn btn-primary">Update Candidate</button>
+                <button 
+                  type="button" 
+                  className="btn btn-secondary"
+                  onClick={onCandidateUpdated}
+                >
+                  Cancel
+                </button>
+              </div>
             </div>
           </form>
         </div>
