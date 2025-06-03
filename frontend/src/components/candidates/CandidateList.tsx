@@ -1,20 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../layout/Header';
-
-interface Candidate {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone?: string;
-  education?: string;
-  cvUrl?: string;
-}
+import { Candidate } from '../../types/candidate';
+import EditCandidateForm from './EditCandidateForm';
 
 const CandidateList: React.FC = () => {
   const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [editingCandidateId, setEditingCandidateId] = useState<number | null>(null);
 
   useEffect(() => {
     fetchCandidates();
@@ -24,7 +17,7 @@ const CandidateList: React.FC = () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await fetch('http://localhost:3010/candidates');
+      const response = await fetch('/api/candidates');
       if (!response.ok) {
         throw new Error('Error loading candidates');
       }
@@ -41,6 +34,24 @@ const CandidateList: React.FC = () => {
       setLoading(false);
     }
   };
+
+  const handleEdit = (candidateId: number) => {
+    setEditingCandidateId(candidateId);
+  };
+
+  const handleCandidateUpdated = () => {
+    setEditingCandidateId(null);
+    fetchCandidates();
+  };
+
+  if (editingCandidateId !== null) {
+    return (
+      <EditCandidateForm
+        candidateId={editingCandidateId}
+        onCandidateUpdated={handleCandidateUpdated}
+      />
+    );
+  }
 
   if (loading) {
     return (
@@ -62,60 +73,104 @@ const CandidateList: React.FC = () => {
 
   return (
     <div className="container-fluid px-4">
-      <Header
-        title="Candidates"
-        subtitle={`${candidates.length} ${
-          candidates.length === 1 ? 'candidate' : 'candidates'
-        } registered`}
-      />
+      <Header title="Candidates" />
 
       <div className="card shadow-sm">
         <div className="card-body">
-          {candidates.length === 0 ? (
-            <div className="text-center p-5">
-              <p className="text-muted mb-0">
-                No candidates registered yet.
-              </p>
+          {error && (
+            <div className="alert alert-danger" role="alert">
+              {error}
             </div>
+          )}
+
+          {loading ? (
+            <div className="text-center">Loading...</div>
           ) : (
             <div className="table-responsive">
-              <table className="table table-striped table-hover align-middle">
+              <table className="table table-hover">
                 <thead>
                   <tr>
-                    <th>Nombre</th>
+                    <th>Name</th>
                     <th>Email</th>
-                    <th>Teléfono</th>
-                    <th>Educación</th>
-                    <th>CV</th>
+                    <th>Phone</th>
+                    <th>Education</th>
+                    <th>Work Experience</th>
+                    <th>Resume</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {candidates.map((candidate) => (
                     <tr key={candidate.id}>
                       <td>{`${candidate.firstName} ${candidate.lastName}`}</td>
-                      <td>
-                        <a
-                          href={`mailto:${candidate.email}`}
-                          className="text-decoration-none"
-                        >
-                          {candidate.email}
-                        </a>
-                      </td>
+                      <td>{candidate.email}</td>
                       <td>{candidate.phone || '-'}</td>
-                      <td>{candidate.education || '-'}</td>
                       <td>
-                        {candidate.cvUrl ? (
+                        {candidate.education.length > 0 ? (
+                          <ul className="list-unstyled mb-0">
+                            {candidate.education.map((edu, index) => (
+                              <li key={index}>
+                                {`${edu.institution} - ${edu.title}`}
+                                <br />
+                                <small className="text-muted">
+                                  {new Date(edu.startDate).toLocaleDateString()}
+                                  {edu.endDate ? ` - ${new Date(edu.endDate).toLocaleDateString()}` : ' - Ongoing'}
+                                </small>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          '-'
+                        )}
+                      </td>
+                      <td>
+                        {candidate.workExperience.length > 0 ? (
+                          <ul className="list-unstyled mb-0">
+                            {candidate.workExperience.map((exp, index) => (
+                              <li key={index}>
+                                {`${exp.company} - ${exp.position}`}
+                                <br />
+                                <small className="text-muted">
+                                  {`${new Date(exp.startDate).toLocaleDateString()} - ${
+                                    new Date(exp.endDate).toLocaleDateString()
+                                  }`}
+                                </small>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          '-'
+                        )}
+                      </td>
+                      <td>
+                        {candidate.resume && candidate.resume.length > 0 ? (
                           <a
-                            href={`http://localhost:3010${candidate.cvUrl}`}
-                            className="btn btn-sm btn-outline-primary"
+                            href={candidate.resume[0].filePath}
                             target="_blank"
                             rel="noopener noreferrer"
+                            className="btn btn-sm btn-outline-primary"
                           >
-                            Ver CV
+                            View Resume
                           </a>
                         ) : (
                           '-'
                         )}
+                      </td>
+                      <td>
+                        <button
+                          className="btn btn-sm btn-outline-secondary me-2"
+                          onClick={() => handleEdit(candidate.id!)}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="btn btn-sm btn-outline-danger"
+                          onClick={() => {
+                            // Handle delete
+                          }}
+                        >
+                          Delete
+                        </button>
                       </td>
                     </tr>
                   ))}

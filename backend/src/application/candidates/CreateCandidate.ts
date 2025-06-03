@@ -1,4 +1,7 @@
 import { Candidate } from '../../domain/entities/Candidate';
+import { Education } from '../../domain/entities/Education';
+import { WorkExperience } from '../../domain/entities/WorkExperience';
+import { Resume } from '../../domain/entities/Resume';
 import { ICandidateRepository } from '../../domain/repositories/ICandidateRepository';
 
 export interface CreateCandidateDTO {
@@ -7,9 +10,9 @@ export interface CreateCandidateDTO {
   email: string;
   phone?: string;
   address?: string;
-  education?: string;
-  workExperience?: string;
-  cvUrl?: string;
+  education: Omit<Education, 'id'>[];
+  workExperience: Omit<WorkExperience, 'id'>[];
+  resume?: Omit<Resume, 'id'>;
 }
 
 export class CreateCandidateUseCase {
@@ -30,7 +33,7 @@ export class CreateCandidateUseCase {
       data.address,
       data.education,
       data.workExperience,
-      data.cvUrl
+      data.resume
     );
 
     return this.candidateRepository.create(candidate);

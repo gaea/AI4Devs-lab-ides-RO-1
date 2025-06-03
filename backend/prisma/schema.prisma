@@ -19,16 +19,46 @@ model User {
   name  String?
 }
 
+model Education {
+  id           Int       @id @default(autoincrement())
+  institution  String
+  title        String
+  startDate    DateTime
+  endDate      DateTime?
+  candidate    Candidate @relation(fields: [candidateId], references: [id])
+  candidateId  Int
+}
+
+model WorkExperience {
+  id           Int       @id @default(autoincrement())
+  company      String
+  position     String
+  description  String
+  startDate    DateTime
+  endDate      DateTime
+  candidate    Candidate @relation(fields: [candidateId], references: [id])
+  candidateId  Int
+}
+
+model Resume {
+  id           Int       @id @default(autoincrement())
+  filePath     String
+  fileType     String
+  uploadDate   DateTime
+  candidate    Candidate @relation(fields: [candidateId], references: [id])
+  candidateId  Int
+}
+
 model Candidate {
-  id             Int      @id @default(autoincrement())
+  id             Int              @id @default(autoincrement())
   firstName      String
   lastName       String
-  email          String   @unique
-  phone          String? // Campo opcional
-  address        String? // Campo opcional
-  education      String? // Campo opcional
-  workExperience String? // Campo opcional
-  cvUrl          String? // Campo opcional
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  email          String          @unique
+  phone          String?
+  address        String?
+  education      Education[]
+  workExperience WorkExperience[]
+  resume         Resume[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 }

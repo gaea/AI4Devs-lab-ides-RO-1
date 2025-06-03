@@ -43,6 +43,7 @@ export const createCandidateRouter = (candidateController: CandidateController):
   router.post('/', upload.single('cv'), (req, res) => candidateController.createCandidate(req, res));
   router.get('/', (req, res) => candidateController.getAllCandidates(req, res));
   router.get('/:id', (req, res) => candidateController.getCandidateById(req, res));
+  router.put('/:id', (req, res) => candidateController.updateCandidate(req, res));
 
   return router;
 };

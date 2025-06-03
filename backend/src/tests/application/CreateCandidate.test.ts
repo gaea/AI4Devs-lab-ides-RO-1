@@ -23,13 +23,19 @@ describe('CreateCandidateUseCase', () => {
       firstName: 'John',
       lastName: 'Doe',
       email: 'john.doe@example.com',
+      education: [],
+      workExperience: [],
     };
 
     const expectedCandidate = new Candidate(
       1,
       candidateData.firstName,
       candidateData.lastName,
-      candidateData.email
+      candidateData.email,
+      undefined,
+      undefined,
+      candidateData.education,
+      candidateData.workExperience
     );
 
     mockRepository.findByEmail.mockResolvedValue(null);
@@ -47,6 +53,8 @@ describe('CreateCandidateUseCase', () => {
       firstName: 'John',
       lastName: 'Doe',
       email: 'john.doe@example.com',
+      education: [],
+      workExperience: [],
     };
 
     const existingCandidate = new Candidate(

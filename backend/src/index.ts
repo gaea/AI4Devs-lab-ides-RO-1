@@ -19,7 +19,7 @@ const candidateRepository = new PrismaCandidateRepository(prisma);
 const candidateController = new CandidateController(candidateRepository);
 
 // Routes
-app.use('/candidates', createCandidateRouter(candidateController));
+app.use('/api/candidates', createCandidateRouter(candidateController));
 
 // Error handling middleware
 app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {

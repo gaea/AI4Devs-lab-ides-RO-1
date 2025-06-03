@@ -1,104 +1,85 @@
 import { PrismaClient } from '@prisma/client';
 import { Candidate } from '../../domain/entities/Candidate';
 import { ICandidateRepository } from '../../domain/repositories/ICandidateRepository';
+import { CandidateMapper } from '../mappers/CandidateMapper';
 
 export class PrismaCandidateRepository implements ICandidateRepository {
   constructor(private prisma: PrismaClient) {}
 
   async create(candidate: Candidate): Promise<Candidate> {
     const created = await this.prisma.candidate.create({
-      data: {
-        firstName: candidate.firstName,
-        lastName: candidate.lastName,
-        email: candidate.email,
-        phone: candidate.phone,
-        address: candidate.address,
-        education: candidate.education,
-        workExperience: candidate.workExperience,
-        cvUrl: candidate.cvUrl,
+      data: CandidateMapper.toCreateInput(candidate),
+      include: {
+        education: true,
+        workExperience: true,
+        resume: {
+          take: 1,
+          orderBy: {
+            uploadDate: 'desc'
+          }
+        },
       },
     });
 
-    return new Candidate(
-      created.id,
-      created.firstName,
-      created.lastName,
-      created.email,
-      created.phone || undefined,
-      created.address || undefined,
-      created.education || undefined,
-      created.workExperience || undefined,
-      created.cvUrl || undefined,
-      created.createdAt,
-      created.updatedAt
-    );
+    return CandidateMapper.toDomain(created);
   }
 
   async findAll(): Promise<Candidate[]> {
     const candidates = await this.prisma.candidate.findMany({
       orderBy: { createdAt: 'desc' },
+      include: {
+        education: true,
+        workExperience: true,
+        resume: {
+          take: 1,
+          orderBy: {
+            uploadDate: 'desc'
+          }
+        },
+      },
     });
 
-    return candidates.map(
-      (c) =>
-        new Candidate(
-          c.id,
-          c.firstName,
-          c.lastName,
-          c.email,
-          c.phone || undefined,
-          c.address || undefined,
-          c.education || undefined,
-          c.workExperience || undefined,
-          c.cvUrl || undefined,
-          c.createdAt,
-          c.updatedAt
-        )
-    );
+    return candidates.map(CandidateMapper.toDomain);
   }
 
   async findById(id: number): Promise<Candidate | null> {
     const candidate = await this.prisma.candidate.findUnique({
       where: { id },
+      include: {
+        education: true,
+        workExperience: true,
+        resume: {
+          take: 1,
+          orderBy: {
+            uploadDate: 'desc'
+          }
+        },
+      },
     });
 
     if (!candidate) return null;
 
-    return new Candidate(
-      candidate.id,
-      candidate.firstName,
-      candidate.lastName,
-      candidate.email,
-      candidate.phone || undefined,
-      candidate.address || undefined,
-      candidate.education || undefined,
-      candidate.workExperience || undefined,
-      candidate.cvUrl || undefined,
-      candidate.createdAt,
-      candidate.updatedAt
-    );
+    return CandidateMapper.toDomain(candidate);
   }
 
   async findByEmail(email: string): Promise<Candidate | null> {
     const candidate = await this.prisma.candidate.findUnique({
       where: { email },
+      include: {
+        education: true,
+        workExperience: true,
+        resume: {
+          take: 1,
+          orderBy: {
+            uploadDate: 'desc'
+          }
+        },
+      },
     });
 
     if (!candidate) return null;
 
-    return new Candidate(
-      candidate.id,
-      candidate.firstName,
-      candidate.lastName,
-      candidate.email,
-      candidate.phone || undefined,
-      candidate.address || undefined,
-      candidate.education || undefined,
-      candidate.workExperience || undefined,
-      candidate.cvUrl || undefined,
-      candidate.createdAt,
-      candidate.updatedAt
-    );
+    return CandidateMapper.toDomain(candidate);
   }
 
   async update(id: number, candidate: Candidate): Promise<Candidate> {
@@ -110,25 +91,49 @@ export class PrismaCandidateRepository implements ICandidateRepository {
         email: candidate.email,
         phone: candidate.phone,
         address: candidate.address,
-        education: candidate.education,
-        workExperience: candidate.workExperience,
-        cvUrl: candidate.cvUrl,
+        education: {
+          deleteMany: {},
+          create: candidate.education.map(edu => ({
+            institution: edu.institution,
+            title: edu.title,
+            startDate: edu.startDate,
+            endDate: edu.endDate,
+          }))
+        },
+        workExperience: {
+          deleteMany: {},
+          create: candidate.workExperience.map(exp => ({
+            company: exp.company,
+            position: exp.position,
+            description: exp.description,
+            startDate: exp.startDate,
+            endDate: exp.endDate,
+          }))
+        },
+        resume: {
+          deleteMany: {},
+          ...(candidate.resume ? {
+            create: [{
+              filePath: candidate.resume.filePath,
+              fileType: candidate.resume.fileType,
+              uploadDate: candidate.resume.uploadDate,
+            }]
+          } : {})
+        }
+      },
+      include: {
+        education: true,
+        workExperience: true,
+        resume: {
+          take: 1,
+          orderBy: {
+            uploadDate: 'desc'
+          }
+        },
       },
     });
 
-    return new Candidate(
-      updated.id,
-      updated.firstName,
-      updated.lastName,
-      updated.email,
-      updated.phone || undefined,
-      updated.address || undefined,
-      updated.education || undefined,
-      updated.workExperience || undefined,
-      updated.cvUrl || undefined,
-      updated.createdAt,
-      updated.updatedAt
-    );
+    return CandidateMapper.toDomain(updated);
   }
 
   async delete(id: number): Promise<void> {
